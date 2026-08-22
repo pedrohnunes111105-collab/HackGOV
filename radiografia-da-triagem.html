@@ -1,0 +1,677 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Radiografia da Triagem</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,wght@0,500;0,600;0,700;1,500&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap">
+
+<style>
+  :root {
+    color-scheme: light;
+    --bg: #F4F7F6;
+    --surface: #FFFFFF;
+    --surface-chart: #FBFDFC;
+    --ink: #12211D;
+    --ink-secondary: #4A5F5A;
+    --ink-muted: #7C8F8A;
+    --border: #DCE6E2;
+    --gridline: #E3EBE8;
+    --accent: #0F6B5C;
+    --accent-soft: #E3F1EC;
+    --accent-ink-on: #FFFFFF;
+    --shadow: 0 1px 2px rgba(18,33,29,0.04), 0 8px 24px rgba(18,33,29,0.06);
+
+    --tri-critical: #C4342F;
+    --tri-serious:  #D8703C;
+    --tri-warning:  #B8860A;
+    --tri-good:     #1F8C4C;
+    --tri-info:     #2A6FB8;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      color-scheme: dark;
+      --bg: #0C1614;
+      --surface: #12201C;
+      --surface-chart: #101C19;
+      --ink: #F1F7F5;
+      --ink-secondary: #B9C9C4;
+      --ink-muted: #7E938D;
+      --border: rgba(255,255,255,0.12);
+      --gridline: #23332E;
+      --accent: #3FC7A6;
+      --accent-soft: rgba(63,199,166,0.14);
+      --accent-ink-on: #06120F;
+      --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 8px 24px rgba(0,0,0,0.35);
+
+      --tri-critical: #E2645F;
+      --tri-serious:  #E89A6B;
+      --tri-warning:  #D9AE3F;
+      --tri-good:     #4CB97C;
+      --tri-info:     #5B9BDB;
+    }
+  }
+  :root[data-theme="dark"] {
+    color-scheme: dark;
+    --bg: #0C1614;
+    --surface: #12201C;
+    --surface-chart: #101C19;
+    --ink: #F1F7F5;
+    --ink-secondary: #B9C9C4;
+    --ink-muted: #7E938D;
+    --border: rgba(255,255,255,0.12);
+    --gridline: #23332E;
+    --accent: #3FC7A6;
+    --accent-soft: rgba(63,199,166,0.14);
+    --accent-ink-on: #06120F;
+    --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 8px 24px rgba(0,0,0,0.35);
+
+    --tri-critical: #E2645F;
+    --tri-serious:  #E89A6B;
+    --tri-warning:  #D9AE3F;
+    --tri-good:     #4CB97C;
+    --tri-info:     #5B9BDB;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: "IBM Plex Sans", system-ui, -apple-system, sans-serif;
+    font-size: 16.5px;
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  .page {
+    max-width: 920px;
+    margin: 0 auto;
+    padding: 56px 24px 80px;
+  }
+
+  h1, h2, h3 {
+    font-family: "Newsreader", Georgia, serif;
+    font-weight: 600;
+    text-wrap: balance;
+    color: var(--ink);
+    margin: 0;
+  }
+
+  p { margin: 0 0 1em; }
+  p:last-child { margin-bottom: 0; }
+
+  .eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-family: "IBM Plex Sans", sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 14px;
+  }
+  .eyebrow::before {
+    content: "";
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: var(--accent);
+  }
+
+  header.masthead h1 {
+    font-size: clamp(32px, 5vw, 46px);
+    line-height: 1.08;
+    margin-bottom: 14px;
+  }
+
+  .dek {
+    font-family: "Newsreader", Georgia, serif;
+    font-style: italic;
+    font-size: 19px;
+    color: var(--ink-secondary);
+    max-width: 62ch;
+    margin-bottom: 18px;
+  }
+
+  .meta-line {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 12.5px;
+    color: var(--ink-muted);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 10px;
+    letter-spacing: 0.01em;
+  }
+  .meta-line span:not(:last-child)::after {
+    content: "·";
+    margin-left: 10px;
+    color: var(--border);
+  }
+
+  section { margin-top: 52px; }
+  section > h2 {
+    font-size: 25px;
+    margin-bottom: 14px;
+  }
+  .section-label {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 12px;
+    color: var(--ink-muted);
+    letter-spacing: 0.03em;
+    margin-bottom: 6px;
+  }
+
+  .prose { max-width: 68ch; color: var(--ink-secondary); }
+  .prose strong { color: var(--ink); font-weight: 600; }
+
+  /* Stat tiles */
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    margin-top: 28px;
+  }
+  .stat-tile {
+    background: var(--surface);
+    padding: 20px 18px;
+  }
+  .stat-value {
+    font-family: "IBM Plex Mono", monospace;
+    font-variant-numeric: tabular-nums;
+    font-size: 30px;
+    font-weight: 600;
+    color: var(--accent);
+    line-height: 1.1;
+  }
+  .stat-label {
+    margin-top: 8px;
+    font-size: 12.5px;
+    color: var(--ink-muted);
+    line-height: 1.4;
+  }
+
+  /* Table */
+  .table-wrap {
+    overflow-x: auto;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    background: var(--surface);
+    box-shadow: var(--shadow);
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 560px;
+  }
+  thead th {
+    text-align: left;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--ink-muted);
+    font-weight: 600;
+    padding: 14px 18px;
+    border-bottom: 1px solid var(--border);
+  }
+  thead th.num, tbody td.num { text-align: right; }
+  tbody td {
+    padding: 13px 18px;
+    border-bottom: 1px solid var(--border);
+    font-size: 15px;
+  }
+  tbody td.num {
+    font-family: "IBM Plex Mono", monospace;
+    font-variant-numeric: tabular-nums;
+    color: var(--ink-secondary);
+  }
+  tbody tr:last-child td { border-bottom: none; }
+  tr.total td {
+    font-weight: 600;
+    color: var(--ink);
+    border-top: 1px solid var(--border);
+    background: var(--accent-soft);
+  }
+  tr.total td.num { font-family: "IBM Plex Mono", monospace; color: var(--ink); }
+  .cat-cell { display: flex; align-items: center; gap: 10px; }
+  .dot { width: 10px; height: 10px; border-radius: 50%; flex: none; }
+
+  /* Charts */
+  .charts-grid {
+    display: grid;
+    grid-template-columns: 1.15fr 1fr;
+    gap: 20px;
+    align-items: stretch;
+  }
+  .chart-panel {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 22px 22px 18px;
+    box-shadow: var(--shadow);
+    display: flex;
+    flex-direction: column;
+  }
+  .chart-title {
+    font-family: "IBM Plex Sans", sans-serif;
+    font-size: 14.5px;
+    font-weight: 600;
+    color: var(--ink);
+    margin-bottom: 2px;
+  }
+  .chart-caption {
+    font-size: 12.5px;
+    color: var(--ink-muted);
+    margin-bottom: 18px;
+    line-height: 1.45;
+  }
+
+  /* Bar chart */
+  .bar-chart {
+    flex: 1;
+    display: flex;
+    gap: 10px;
+  }
+  .bar-axis {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 230px;
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 11px;
+    color: var(--ink-muted);
+    text-align: right;
+    padding-bottom: 26px;
+  }
+  .bar-plot {
+    flex: 1;
+    position: relative;
+    height: 230px;
+    display: flex;
+    align-items: flex-end;
+    gap: 14px;
+    padding-bottom: 26px;
+    border-bottom: 1px solid var(--gridline);
+  }
+  .bar-plot .gridline {
+    position: absolute;
+    left: 0; right: 0;
+    border-top: 1px solid var(--gridline);
+  }
+  .bar-col {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    height: 100%;
+    position: relative;
+    cursor: default;
+  }
+  .bar-value {
+    font-family: "IBM Plex Mono", monospace;
+    font-variant-numeric: tabular-nums;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--ink);
+    margin-bottom: 6px;
+  }
+  .bar {
+    width: 100%;
+    max-width: 40px;
+    border-radius: 5px 5px 0 0;
+    outline: 1px solid rgba(0,0,0,0.06);
+    transition: filter 0.15s ease;
+  }
+  @media (prefers-reduced-motion: reduce) { .bar { transition: none; } }
+  .bar-col:hover .bar { filter: brightness(1.08); }
+  .bar-cat {
+    position: absolute;
+    bottom: -24px;
+    font-size: 10.5px;
+    color: var(--ink-muted);
+    white-space: nowrap;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  /* Pie chart */
+  .pie-wrap { display: flex; flex-direction: column; align-items: center; flex: 1; justify-content: center; }
+  .pie-svg { width: 100%; max-width: 220px; height: auto; }
+  .pie-slice { stroke: var(--surface); stroke-width: 2; cursor: default; transition: opacity 0.15s ease; }
+  @media (prefers-reduced-motion: reduce) { .pie-slice { transition: none; } }
+  .pie-slice:hover { opacity: 0.85; }
+  .pie-label {
+    font-family: "IBM Plex Sans", sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    fill: #ffffff;
+    pointer-events: none;
+  }
+
+  /* Legend (shared) */
+  .legend {
+    margin-top: 22px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px 22px;
+    justify-content: center;
+    padding-top: 16px;
+    border-top: 1px solid var(--border);
+  }
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12.5px;
+    color: var(--ink-secondary);
+  }
+
+  /* Tooltip */
+  #tooltip {
+    position: fixed;
+    pointer-events: none;
+    background: var(--ink);
+    color: var(--bg);
+    font-family: "IBM Plex Sans", sans-serif;
+    font-size: 12.5px;
+    padding: 8px 11px;
+    border-radius: 7px;
+    line-height: 1.45;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.25);
+    opacity: 0;
+    transform: translate(-50%, calc(-100% - 10px));
+    z-index: 20;
+    white-space: nowrap;
+  }
+  #tooltip.visible { opacity: 1; }
+  #tooltip b { color: var(--bg); }
+
+  /* Analysis */
+  .qa { margin-top: 26px; }
+  .qa h3 {
+    font-size: 18px;
+    margin-bottom: 8px;
+  }
+  .qa .prose { margin-bottom: 0; }
+
+  footer {
+    margin-top: 64px;
+    padding-top: 22px;
+    border-top: 1px solid var(--border);
+    font-size: 12.5px;
+    color: var(--ink-muted);
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+
+  @media (max-width: 760px) {
+    .stats { grid-template-columns: repeat(2, 1fr); }
+    .charts-grid { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 480px) {
+    .stats { grid-template-columns: 1fr 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="page">
+
+  <header class="masthead">
+    <div class="eyebrow">HackGov · Diagnóstico de Serviço Público</div>
+    <h1>Parte 4 — Estatística Descritiva</h1>
+    <p class="dek">Agendamento e triagem de consultas do SUS com apoio de IA: os primeiros números da fila.</p>
+    <div class="meta-line">
+      <span>UBS piloto (dados fictícios)</span>
+      <span>Janela de 30 dias</span>
+      <span>Classificação por Protocolo de Manchester adaptado</span>
+    </div>
+  </header>
+
+  <section class="stats" aria-label="Indicadores resumo">
+    <div class="stat-tile">
+      <div class="stat-value">617</div>
+      <div class="stat-label">Triagens registradas no período</div>
+    </div>
+    <div class="stat-tile">
+      <div class="stat-value">81&nbsp;min</div>
+      <div class="stat-label">Tempo médio geral de espera</div>
+    </div>
+    <div class="stat-tile">
+      <div class="stat-value">57,2%</div>
+      <div class="stat-label">Casos de baixa urgência (verde + azul)</div>
+    </div>
+    <div class="stat-tile">
+      <div class="stat-value">12,2%</div>
+      <div class="stat-label">Casos de alta prioridade (vermelho + laranja)</div>
+    </div>
+  </section>
+
+  <section class="context">
+    <div class="section-label">Sobre os dados</div>
+    <h2>Uma UBS piloto, simulada para o diagnóstico</h2>
+    <p class="prose">
+      Os números abaixo são <strong>fictícios</strong>, construídos para fins didáticos desta primeira fase do
+      HackGov. Eles simulam o registro de triagens de uma Unidade Básica de Saúde piloto ao longo de
+      <strong>30 dias corridos</strong>. Cada atendimento foi classificado por um módulo de triagem assistida por IA
+      segundo uma adaptação do <strong>Protocolo de Manchester</strong>, que ordena os casos por risco clínico —
+      de Emergência a Não urgente. Para cada classificação, registramos o número de casos e o tempo médio decorrido
+      entre a triagem e o atendimento efetivo.
+    </p>
+  </section>
+
+  <section class="table-section">
+    <div class="section-label">Tabela de frequência</div>
+    <h2>Triagens por classificação de risco</h2>
+    <div class="table-wrap" style="margin-top: 18px;">
+      <table>
+        <thead>
+          <tr>
+            <th>Classificação de risco</th>
+            <th class="num">Casos</th>
+            <th class="num">Freq. relativa</th>
+            <th class="num">Espera média</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="cat-cell"><span class="dot" style="background:var(--tri-critical)"></span>Vermelho — Emergência</td>
+            <td class="num">14</td>
+            <td class="num">2,3%</td>
+            <td class="num">6 min</td>
+          </tr>
+          <tr>
+            <td class="cat-cell"><span class="dot" style="background:var(--tri-serious)"></span>Laranja — Muito urgente</td>
+            <td class="num">61</td>
+            <td class="num">9,9%</td>
+            <td class="num">18 min</td>
+          </tr>
+          <tr>
+            <td class="cat-cell"><span class="dot" style="background:var(--tri-warning)"></span>Amarelo — Urgente</td>
+            <td class="num">189</td>
+            <td class="num">30,6%</td>
+            <td class="num">52 min</td>
+          </tr>
+          <tr>
+            <td class="cat-cell"><span class="dot" style="background:var(--tri-good)"></span>Verde — Pouco urgente</td>
+            <td class="num">246</td>
+            <td class="num">39,9%</td>
+            <td class="num">98 min</td>
+          </tr>
+          <tr>
+            <td class="cat-cell"><span class="dot" style="background:var(--tri-info)"></span>Azul — Não urgente</td>
+            <td class="num">107</td>
+            <td class="num">17,3%</td>
+            <td class="num">141 min</td>
+          </tr>
+          <tr class="total">
+            <td>Total</td>
+            <td class="num">617</td>
+            <td class="num">100%</td>
+            <td class="num">81 min*</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="prose" style="font-size:12.5px; color:var(--ink-muted); margin-top:10px;">*Média geral ponderada pelo número de casos em cada classificação.</p>
+  </section>
+
+  <section class="charts">
+    <div class="section-label">Gráficos</div>
+    <h2>A mesma fila, vista de dois ângulos</h2>
+
+    <div class="charts-grid" style="margin-top: 18px;">
+
+      <div class="chart-panel">
+        <div class="chart-title">Tempo médio de espera por classificação</div>
+        <div class="chart-caption">Minutos entre a triagem e o atendimento efetivo.</div>
+        <div class="bar-chart">
+          <div class="bar-axis">
+            <span>150</span><span>100</span><span>50</span><span>0</span>
+          </div>
+          <div class="bar-plot" id="barPlot">
+            <div class="gridline" style="bottom: 100%;"></div>
+            <div class="gridline" style="bottom: 66.6%;"></div>
+            <div class="gridline" style="bottom: 33.3%;"></div>
+
+            <div class="bar-col" data-tip="Vermelho — Emergência: 6 min de espera média (14 casos)">
+              <div class="bar-value">6</div>
+              <div class="bar" style="height:4%; background:var(--tri-critical);"></div>
+              <div class="bar-cat">Verm.</div>
+            </div>
+            <div class="bar-col" data-tip="Laranja — Muito urgente: 18 min de espera média (61 casos)">
+              <div class="bar-value">18</div>
+              <div class="bar" style="height:12%; background:var(--tri-serious);"></div>
+              <div class="bar-cat">Laranja</div>
+            </div>
+            <div class="bar-col" data-tip="Amarelo — Urgente: 52 min de espera média (189 casos)">
+              <div class="bar-value">52</div>
+              <div class="bar" style="height:34.7%; background:var(--tri-warning);"></div>
+              <div class="bar-cat">Amarelo</div>
+            </div>
+            <div class="bar-col" data-tip="Verde — Pouco urgente: 98 min de espera média (246 casos)">
+              <div class="bar-value">98</div>
+              <div class="bar" style="height:65.3%; background:var(--tri-good);"></div>
+              <div class="bar-cat">Verde</div>
+            </div>
+            <div class="bar-col" data-tip="Azul — Não urgente: 141 min de espera média (107 casos)">
+              <div class="bar-value">141</div>
+              <div class="bar" style="height:94%; background:var(--tri-info);"></div>
+              <div class="bar-cat">Azul</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="chart-panel">
+        <div class="chart-title">Distribuição dos atendimentos</div>
+        <div class="chart-caption">Participação percentual de cada classificação no total triado.</div>
+        <div class="pie-wrap">
+          <svg class="pie-svg" viewBox="0 0 220 220" role="img" aria-label="Gráfico de setores: distribuição dos atendimentos por classificação de risco">
+            <path class="pie-slice" data-tip="Vermelho — Emergência: 2,3% (14 casos)" fill="var(--tri-critical)" d="M110,110 L110,20 A90,90 0 0,1 122.79,20.91 Z"></path>
+            <path class="pie-slice" data-tip="Laranja — Muito urgente: 9,9% (61 casos)" fill="var(--tri-serious)" d="M110,110 L122.79,20.91 A90,90 0 0,1 172.22,44.97 Z"></path>
+            <path class="pie-slice" data-tip="Amarelo — Urgente: 30,6% (189 casos)" fill="var(--tri-warning)" d="M110,110 L172.22,44.97 A90,90 0 0,1 149.43,190.91 Z"></path>
+            <path class="pie-slice" data-tip="Verde — Pouco urgente: 39,9% (246 casos)" fill="var(--tri-good)" d="M110,110 L149.43,190.91 A90,90 0 0,1 30.23,68.34 Z"></path>
+            <path class="pie-slice" data-tip="Azul — Não urgente: 17,3% (107 casos)" fill="var(--tri-info)" d="M110,110 L30.23,68.34 A90,90 0 0,1 110,20 Z"></path>
+            <text class="pie-label" x="164.35" y="121.42" text-anchor="middle">30,6%</text>
+            <text class="pie-label" x="70.54" y="151.31" text-anchor="middle">39,9%</text>
+            <text class="pie-label" x="81.49" y="65.96" text-anchor="middle">17,3%</text>
+          </svg>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="legend">
+      <div class="legend-item"><span class="dot" style="background:var(--tri-critical)"></span>Vermelho — Emergência (2,3%)</div>
+      <div class="legend-item"><span class="dot" style="background:var(--tri-serious)"></span>Laranja — Muito urgente (9,9%)</div>
+      <div class="legend-item"><span class="dot" style="background:var(--tri-warning)"></span>Amarelo — Urgente (30,6%)</div>
+      <div class="legend-item"><span class="dot" style="background:var(--tri-good)"></span>Verde — Pouco urgente (39,9%)</div>
+      <div class="legend-item"><span class="dot" style="background:var(--tri-info)"></span>Azul — Não urgente (17,3%)</div>
+    </div>
+  </section>
+
+  <section class="analysis">
+    <div class="section-label">Análise</div>
+    <h2>O que os gráficos revelam</h2>
+
+    <div class="qa">
+      <h3>Quais padrões, comportamentos ou gargalos podem ser identificados?</h3>
+      <p class="prose">
+        A triagem assistida por IA está priorizando corretamente: os casos <strong>vermelho</strong> e
+        <strong>laranja</strong> — só 12,2% do volume — são atendidos em poucos minutos (6 e 18 min, em média).
+        O problema está do outro lado da fila. <strong>Verde e azul somam 57,2% de todo o volume</strong>, mas são
+        exatamente os que mais esperam: 98 e 141 minutos, respectivamente — quase duas horas e meia para o caso
+        menos urgente. E o gargalo já está subindo de nível: o <strong>amarelo</strong>, que deveria ser resolvido
+        com agilidade, já acumula 52 minutos de espera média. Ou seja, a fila não está represada por excesso de
+        emergências, e sim pelo alto volume de casos de baixa complexidade disputando a mesma capacidade de
+        atendimento presencial — um gargalo estrutural de capacidade, não de priorização clínica.
+      </p>
+    </div>
+
+    <div class="qa" style="margin-top: 24px;">
+      <h3>Que decisão estratégica de gestão pública poderia ser tomada com base nesses dados?</h3>
+      <p class="prose">
+        Com esse diagnóstico, a gestão da UBS pode usar a própria triagem por IA para <strong>desviar</strong> os
+        casos verde e azul do atendimento presencial tradicional — orientação remota, telemedicina, encaminhamento
+        à farmácia ou agendamento em horários de menor demanda — em vez de tratá-los na mesma fila dos casos
+        urgentes. Isso libera vagas presenciais e evita que o amarelo continue subindo de tempo de espera. Esses
+        indicadores também podem virar uma <strong>meta de serviço (SLA)</strong> monitorada em dashboard: por
+        exemplo, nenhum caso classificado como amarelo ou acima deve esperar mais de 30 minutos — um limiar que,
+        hoje, já está sendo ultrapassado.
+      </p>
+    </div>
+  </section>
+
+  <footer>
+    <span>Dados fictícios, elaborados para fins didáticos — base dos futuros dashboards de desempenho do HackGov.</span>
+    <span>Projeto HackGov · Parte 4</span>
+  </footer>
+
+</div>
+
+<div id="tooltip"></div>
+
+<script>
+  (function () {
+    var tip = document.getElementById('tooltip');
+    var targets = document.querySelectorAll('[data-tip]');
+
+    function show(e) {
+      tip.textContent = e.currentTarget.getAttribute('data-tip');
+      tip.classList.add('visible');
+      move(e);
+    }
+    function move(e) {
+      var x = e.clientX, y = e.clientY;
+      var vw = window.innerWidth;
+      var half = tip.offsetWidth / 2 || 80;
+      x = Math.min(Math.max(x, half + 8), vw - half - 8);
+      tip.style.left = x + 'px';
+      tip.style.top = y + 'px';
+    }
+    function hide() {
+      tip.classList.remove('visible');
+    }
+
+    targets.forEach(function (el) {
+      el.addEventListener('mouseenter', show);
+      el.addEventListener('mousemove', move);
+      el.addEventListener('mouseleave', hide);
+      el.addEventListener('focus', show);
+      el.addEventListener('blur', hide);
+    });
+  })();
+</script>
+
+</body>
+</html>
