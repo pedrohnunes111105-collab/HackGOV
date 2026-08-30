@@ -4,44 +4,47 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Radiografia da Triagem</title>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,wght@0,500;0,600;0,700;1,500&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap">
 
 <style>
   :root {
     color-scheme: light;
-    --bg: #F4F7F6;
+    --bg: #F3F4F5;
     --surface: #FFFFFF;
-    --surface-chart: #FBFDFC;
-    --ink: #12211D;
-    --ink-secondary: #4A5F5A;
-    --ink-muted: #7C8F8A;
-    --border: #DCE6E2;
-    --gridline: #E3EBE8;
-    --accent: #0F6B5C;
-    --accent-soft: #E3F1EC;
+    --surface-chart: #FAFAFB;
+    --ink: #1C1F22;
+    --ink-secondary: #4A5058;
+    --ink-muted: #7A8088;
+    --border: #DEE1E4;
+    --gridline: #E6E8EA;
+    --accent: #0B6E4F;
+    --accent-soft: #E1F0EA;
     --accent-ink-on: #FFFFFF;
-    --shadow: 0 1px 2px rgba(18,33,29,0.04), 0 8px 24px rgba(18,33,29,0.06);
+    --shadow: 0 1px 2px rgba(28,31,34,0.04), 0 8px 24px rgba(28,31,34,0.06);
 
-    --tri-critical: #C4342F;
-    --tri-serious:  #D8703C;
-    --tri-warning:  #B8860A;
-    --tri-good:     #1F8C4C;
-    --tri-info:     #2A6FB8;
+    --tri-critical: #B3261E;
+    --tri-serious:  #C46A1F;
+    --tri-warning:  #A9820A;
+    --tri-good:     #0B6E4F;
+    --tri-info:     #35618F;
+
+    --risk-color: #C46A1F;
+    --risk-soft: #F7EBDE;
   }
 
   @media (prefers-color-scheme: dark) {
     :root:not([data-theme="light"]) {
       color-scheme: dark;
-      --bg: #0C1614;
-      --surface: #12201C;
-      --surface-chart: #101C19;
-      --ink: #F1F7F5;
-      --ink-secondary: #B9C9C4;
-      --ink-muted: #7E938D;
+      --bg: #17191C;
+      --surface: #1F2226;
+      --surface-chart: #1B1E21;
+      --ink: #F0F1F2;
+      --ink-secondary: #B9BEC4;
+      --ink-muted: #82898F;
       --border: rgba(255,255,255,0.12);
-      --gridline: #23332E;
-      --accent: #3FC7A6;
-      --accent-soft: rgba(63,199,166,0.14);
+      --gridline: #2A2E32;
+      --accent: #3FBF8F;
+      --accent-soft: rgba(63,191,143,0.14);
       --accent-ink-on: #06120F;
       --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 8px 24px rgba(0,0,0,0.35);
 
@@ -49,21 +52,24 @@
       --tri-serious:  #E89A6B;
       --tri-warning:  #D9AE3F;
       --tri-good:     #4CB97C;
-      --tri-info:     #5B9BDB;
+      --tri-info:     #6E9BC4;
+
+      --risk-color: #E89A6B;
+      --risk-soft: rgba(232,154,107,0.14);
     }
   }
   :root[data-theme="dark"] {
     color-scheme: dark;
-    --bg: #0C1614;
-    --surface: #12201C;
-    --surface-chart: #101C19;
-    --ink: #F1F7F5;
-    --ink-secondary: #B9C9C4;
-    --ink-muted: #7E938D;
+    --bg: #17191C;
+    --surface: #1F2226;
+    --surface-chart: #1B1E21;
+    --ink: #F0F1F2;
+    --ink-secondary: #B9BEC4;
+    --ink-muted: #82898F;
     --border: rgba(255,255,255,0.12);
-    --gridline: #23332E;
-    --accent: #3FC7A6;
-    --accent-soft: rgba(63,199,166,0.14);
+    --gridline: #2A2E32;
+    --accent: #3FBF8F;
+    --accent-soft: rgba(63,191,143,0.14);
     --accent-ink-on: #06120F;
     --shadow: 0 1px 2px rgba(0,0,0,0.3), 0 8px 24px rgba(0,0,0,0.35);
 
@@ -71,7 +77,10 @@
     --tri-serious:  #E89A6B;
     --tri-warning:  #D9AE3F;
     --tri-good:     #4CB97C;
-    --tri-info:     #5B9BDB;
+    --tri-info:     #6E9BC4;
+
+    --risk-color: #E89A6B;
+    --risk-soft: rgba(232,154,107,0.14);
   }
 
   * { box-sizing: border-box; }
@@ -92,8 +101,9 @@
   }
 
   h1, h2, h3 {
-    font-family: "Newsreader", Georgia, serif;
-    font-weight: 600;
+    font-family: "IBM Plex Sans", system-ui, -apple-system, sans-serif;
+    font-weight: 700;
+    letter-spacing: -0.01em;
     text-wrap: balance;
     color: var(--ink);
     margin: 0;
@@ -128,9 +138,9 @@
   }
 
   .dek {
-    font-family: "Newsreader", Georgia, serif;
-    font-style: italic;
-    font-size: 19px;
+    font-family: "IBM Plex Sans", system-ui, -apple-system, sans-serif;
+    font-weight: 400;
+    font-size: 18px;
     color: var(--ink-secondary);
     max-width: 62ch;
     margin-bottom: 18px;
@@ -401,6 +411,87 @@
   }
   .qa .prose { margin-bottom: 0; }
 
+  /* Impact cards (produtividade / transparência / custos) */
+  .impact-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-top: 22px;
+  }
+  .impact-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px 20px 18px;
+    box-shadow: var(--shadow);
+  }
+  .impact-tag {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 10px;
+  }
+  .impact-card p {
+    font-size: 14.5px;
+    color: var(--ink-secondary);
+    margin: 0;
+  }
+
+  /* Risk cards */
+  .risk-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 18px;
+    margin-top: 22px;
+  }
+  .risk-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 22px;
+    box-shadow: var(--shadow);
+  }
+  .risk-num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px; height: 24px;
+    border-radius: 50%;
+    background: var(--risk-soft);
+    color: var(--risk-color);
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 12px;
+    font-weight: 600;
+    margin-bottom: 12px;
+  }
+  .risk-card h3 {
+    font-size: 17px;
+    margin-bottom: 8px;
+  }
+  .risk-card p {
+    font-size: 14.5px;
+    color: var(--ink-secondary);
+    margin: 0 0 10px;
+  }
+  .risk-card .mitigation {
+    padding-top: 10px;
+    border-top: 1px solid var(--border);
+    margin: 0;
+  }
+  .risk-card .mitigation-label {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 10.5px;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--ink-muted);
+    display: block;
+    margin-bottom: 4px;
+  }
+
   footer {
     margin-top: 64px;
     padding-top: 22px;
@@ -416,6 +507,8 @@
   @media (max-width: 760px) {
     .stats { grid-template-columns: repeat(2, 1fr); }
     .charts-grid { grid-template-columns: 1fr; }
+    .impact-grid { grid-template-columns: 1fr; }
+    .risk-grid { grid-template-columns: 1fr; }
   }
   @media (max-width: 480px) {
     .stats { grid-template-columns: 1fr 1fr; }
@@ -632,9 +725,78 @@
     </div>
   </section>
 
+  <section class="reflection">
+    <div class="section-label">Parte 5 · Reflexão</div>
+    <h2>Reflexão sobre transformação digital</h2>
+    <p class="prose">
+      O HackGov nasce para enfrentar um problema público concreto e recorrente no SUS: filas de espera longas e mal
+      geridas, em que o tempo de atendimento não acompanha o risco clínico real de cada paciente — como mostrou o
+      diagnóstico acima, em que casos de baixa urgência (57,2% do volume) chegam a esperar 141 minutos disputando a
+      mesma capacidade presencial dos casos realmente urgentes. Ao inserir uma camada de triagem assistida por IA na
+      porta de entrada do atendimento, o sistema <strong>aumenta a produtividade</strong> da equipe de saúde, que
+      deixa de gastar tempo clínico classificando manualmente cada caso e passa a agir diretamente sobre uma fila já
+      priorizada; <strong>aumenta a transparência ao cidadão</strong>, que passa a acompanhar sua posição, o tempo
+      estimado de espera e o critério objetivo usado para priorizá-lo, em vez de depender da percepção subjetiva de
+      estar sendo preterido; e <strong>reduz custos</strong>, porque desvia os casos verde e azul do atendimento
+      presencial caro — telemedicina, orientação remota, encaminhamento à farmácia — liberando vagas físicas e
+      evitando desperdício da capacidade instalada.
+    </p>
+
+    <div class="impact-grid">
+      <div class="impact-card">
+        <div class="impact-tag">Produtividade</div>
+        <p>Equipe de saúde deixa de triar manualmente e atua sobre uma fila já classificada por risco.</p>
+      </div>
+      <div class="impact-card">
+        <div class="impact-tag">Transparência</div>
+        <p>Cidadão vê posição, tempo estimado e o critério clínico usado para priorizar seu caso.</p>
+      </div>
+      <div class="impact-card">
+        <div class="impact-tag">Custos</div>
+        <p>Casos de baixa urgência migram para canais remotos, liberando vagas presenciais mais caras.</p>
+      </div>
+    </div>
+
+    <div class="qa" style="margin-top: 30px;">
+      <h3>Dois riscos da implementação e como mitigá-los</h3>
+    </div>
+    <div class="risk-grid">
+      <div class="risk-card">
+        <div class="risk-num">1</div>
+        <h3>Erro de classificação algorítmica</h3>
+        <p>
+          Um modelo de triagem pode subclassificar um caso grave como pouco urgente (falso negativo), atrasando
+          um atendimento que deveria ser prioritário e colocando o paciente em risco.
+        </p>
+        <p class="mitigation">
+          <span class="mitigation-label">Mitigação</span>
+          Manter revisão humana obrigatória para casos limítrofes ou de maior gravidade, com poder de
+          profissionais de saúde para sobrepor a classificação da IA, e auditar periodicamente os acertos do
+          modelo contra o desfecho clínico real.
+        </p>
+      </div>
+
+      <div class="risk-card">
+        <div class="risk-num">2</div>
+        <h3>Exclusão digital e privacidade de dados</h3>
+        <p>
+          Parte da população não tem acesso a smartphone ou internet estável para usar um canal digital de
+          triagem, e dados de saúde são sensíveis e regulados pela LGPD, o que expõe o sistema a risco de
+          exclusão e de vazamento.
+        </p>
+        <p class="mitigation">
+          <span class="mitigation-label">Mitigação</span>
+          Manter sempre um canal presencial equivalente para quem não tiver acesso digital, e aplicar
+          criptografia, minimização de dados e controles de acesso alinhados à LGPD, com trilha de auditoria
+          sobre quem consulta cada registro.
+        </p>
+      </div>
+    </div>
+  </section>
+
   <footer>
     <span>Dados fictícios, elaborados para fins didáticos — base dos futuros dashboards de desempenho do HackGov.</span>
-    <span>Projeto HackGov · Parte 4</span>
+    <span>Projeto HackGov · Partes 4 e 5</span>
   </footer>
 
 </div>
