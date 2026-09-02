@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Radiografia da Triagem</title>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Source+Serif+4:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap">
 
 <style>
   :root {
@@ -91,7 +91,7 @@
   body {
     background: var(--bg);
     color: var(--ink);
-    font-family: "IBM Plex Sans", system-ui, -apple-system, sans-serif;
+    font-family: "Source Serif 4", Georgia, "Times New Roman", serif;
     font-size: 16.5px;
     line-height: 1.6;
     margin: 0;
@@ -104,7 +104,7 @@
   }
 
   h1, h2, h3 {
-    font-family: "IBM Plex Sans", system-ui, -apple-system, sans-serif;
+    font-family: "Source Serif 4", Georgia, "Times New Roman", serif;
     font-weight: 700;
     letter-spacing: -0.01em;
     text-wrap: balance;
@@ -119,7 +119,7 @@
     display: inline-flex;
     align-items: center;
     gap: 8px;
-    font-family: "IBM Plex Sans", sans-serif;
+    font-family: "Source Serif 4", Georgia, "Times New Roman", serif;
     font-size: 12px;
     font-weight: 600;
     letter-spacing: 0.09em;
@@ -141,7 +141,7 @@
   }
 
   .dek {
-    font-family: "IBM Plex Sans", system-ui, -apple-system, sans-serif;
+    font-family: "Source Serif 4", Georgia, "Times New Roman", serif;
     font-weight: 400;
     font-size: 18px;
     color: var(--ink-secondary);
@@ -279,7 +279,7 @@
     flex-direction: column;
   }
   .chart-title {
-    font-family: "IBM Plex Sans", sans-serif;
+    font-family: "Source Serif 4", Georgia, "Times New Roman", serif;
     font-size: 14.5px;
     font-weight: 600;
     color: var(--ink);
@@ -368,7 +368,7 @@
   @media (prefers-reduced-motion: reduce) { .pie-slice { transition: none; } }
   .pie-slice:hover { opacity: 0.85; }
   .pie-label {
-    font-family: "IBM Plex Sans", sans-serif;
+    font-family: "Source Serif 4", Georgia, "Times New Roman", serif;
     font-size: 11px;
     font-weight: 600;
     fill: #ffffff;
@@ -399,7 +399,7 @@
     pointer-events: none;
     background: var(--ink);
     color: var(--bg);
-    font-family: "IBM Plex Sans", sans-serif;
+    font-family: "Source Serif 4", Georgia, "Times New Roman", serif;
     font-size: 12.5px;
     padding: 8px 11px;
     border-radius: 7px;
@@ -531,12 +531,12 @@
 
   <header class="masthead">
     <div class="eyebrow">HackGov · Diagnóstico de Serviço Público</div>
-    <h1>Parte 4 — Estatística Descritiva</h1>
+    <h1>Parte 4: Estatística Descritiva</h1>
     <p class="dek">Agendamento e triagem de consultas do SUS com apoio de IA: os primeiros números da fila.</p>
     <div class="meta-line">
       <span>Conjunto simulado de 100 pedidos</span>
       <span>Dados hipotéticos, para fins acadêmicos</span>
-      <span>Contexto consultado: Ministério da Saúde — Absenteísmo no SUS</span>
+      <span>Contexto consultado: Ministério da Saúde, Absenteísmo no SUS</span>
     </div>
   </header>
 
@@ -615,13 +615,13 @@
         </tbody>
       </table>
     </div>
-    <p class="prose" style="font-size:12.5px; color:var(--ink-muted); margin-top:10px;">Fonte dos dados: conjunto simulado para fins acadêmicos. Contexto consultado: Ministério da Saúde — Absenteísmo no SUS.</p>
+    <p class="prose" style="font-size:12.5px; color:var(--ink-muted); margin-top:10px;">Fonte dos dados: conjunto simulado para fins acadêmicos. Contexto consultado: Ministério da Saúde, Absenteísmo no SUS.</p>
   </section>
 
   <section class="charts">
     <div class="section-label">Gráficos</div>
     <h2>Distribuição simulada dos pedidos por tempo estimado de espera</h2>
-    <p class="prose" style="margin-top:6px;">Figura 1 — Distribuição simulada de 100 pedidos por tempo estimado de espera.</p>
+    <p class="prose" style="margin-top:6px;">Figura 1. Distribuição simulada de 100 pedidos por tempo estimado de espera.</p>
 
     <div class="charts-grid" style="margin-top: 18px;">
 
@@ -639,17 +639,17 @@
             <div class="bar-col" data-tip="0 a 7 dias: 18 pedidos (18%)">
               <div class="bar-value">18</div>
               <div class="bar" style="height:36%; background:var(--tri-good);"></div>
-              <div class="bar-cat">0–7d</div>
+              <div class="bar-cat">0 a 7d</div>
             </div>
             <div class="bar-col" data-tip="8 a 30 dias: 42 pedidos (42%)">
               <div class="bar-value">42</div>
               <div class="bar" style="height:84%; background:var(--tri-info);"></div>
-              <div class="bar-cat">8–30d</div>
+              <div class="bar-cat">8 a 30d</div>
             </div>
             <div class="bar-col" data-tip="31 a 90 dias: 27 pedidos (27%)">
               <div class="bar-value">27</div>
               <div class="bar" style="height:54%; background:var(--tri-warning);"></div>
-              <div class="bar-cat">31–90d</div>
+              <div class="bar-cat">31 a 90d</div>
             </div>
             <div class="bar-col" data-tip="Mais de 90 dias: 13 pedidos (13%)">
               <div class="bar-value">13</div>
@@ -727,8 +727,8 @@
     <h2>Reflexão sobre transformação digital</h2>
     <p class="prose">
       O HackGov propõe resolver a demora, a falta de informação e a dificuldade de acompanhamento no agendamento de
-      consultas e pedidos médicos do SUS — como mostrou o diagnóstico acima, em que 40% dos pedidos analisados
-      aguardam mais de 30 dias por atendimento. Na primeira versão, o sistema permitirá <strong>consultar o status
+      consultas e pedidos médicos do SUS. Como mostrou o diagnóstico acima, 40% dos pedidos analisados aguardam mais
+      de 30 dias por atendimento. Na primeira versão, o sistema permitirá <strong>consultar o status
       da solicitação</strong>, verificar horários disponíveis, confirmar, cancelar ou remarcar atendimentos e
       receber lembretes automáticos. Essas funcionalidades podem <strong>aumentar a produtividade</strong> das
       unidades de saúde, reduzir o trabalho manual e o retrabalho dos servidores, melhorar o aproveitamento das
@@ -798,13 +798,13 @@
     </div>
 
     <p class="prose" style="font-size:12.5px; color:var(--ink-muted); margin-top:22px;">
-      Referências: <a href="https://www.gov.br/anpd/pt-br/assuntos/titular-de-dados-1/direito-dos-titulares" target="_blank" rel="noopener">ANPD — Direitos dos titulares de dados</a> ·
-      <a href="https://www.who.int/publications/i/item/9789240029200" target="_blank" rel="noopener">OMS — Ethics and governance of AI for health</a>
+      Referências: <a href="https://www.gov.br/anpd/pt-br/assuntos/titular-de-dados-1/direito-dos-titulares" target="_blank" rel="noopener">ANPD: Direitos dos titulares de dados</a> ·
+      <a href="https://www.who.int/publications/i/item/9789240029200" target="_blank" rel="noopener">OMS: Ethics and governance of AI for health</a>
     </p>
   </section>
 
   <footer>
-    <span>Dados fictícios, elaborados para fins didáticos — base dos futuros dashboards de desempenho do HackGov.</span>
+    <span>Dados fictícios, elaborados para fins didáticos. Base dos futuros dashboards de desempenho do HackGov.</span>
     <span>Projeto HackGov · Partes 4 e 5</span>
   </footer>
 
