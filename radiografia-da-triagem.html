@@ -11,6 +11,7 @@
     color-scheme: light;
     --bg: #F3F4F5;
     --surface: #FFFFFF;
+    --surface-raised: #FFFFFF;
     --surface-chart: #FAFAFB;
     --ink: #1C1F22;
     --ink-secondary: #4A5058;
@@ -37,6 +38,7 @@
       color-scheme: dark;
       --bg: #17191C;
       --surface: #1F2226;
+      --surface-raised: #26292E;
       --surface-chart: #1B1E21;
       --ink: #F0F1F2;
       --ink-secondary: #B9BEC4;
@@ -62,6 +64,7 @@
     color-scheme: dark;
     --bg: #17191C;
     --surface: #1F2226;
+    --surface-raised: #26292E;
     --surface-chart: #1B1E21;
     --ink: #F0F1F2;
     --ink-secondary: #B9BEC4;
@@ -171,11 +174,13 @@
     font-size: 12px;
     color: var(--ink-muted);
     letter-spacing: 0.03em;
-    margin-bottom: 6px;
+    margin-bottom: 12px;
   }
 
   .prose { max-width: 68ch; color: var(--ink-secondary); }
   .prose strong { color: var(--ink); font-weight: 600; }
+  .prose a { color: var(--accent); text-decoration: underline; text-underline-offset: 2px; }
+  .prose a:hover { opacity: 0.85; }
 
   /* Stat tiles */
   .stats {
@@ -187,10 +192,11 @@
     border-radius: 12px;
     overflow: hidden;
     margin-top: 28px;
+    box-shadow: var(--shadow);
   }
   .stat-tile {
-    background: var(--surface);
-    padding: 20px 18px;
+    background: var(--surface-raised);
+    padding: 26px 22px;
   }
   .stat-value {
     font-family: "IBM Plex Mono", monospace;
@@ -200,10 +206,14 @@
     color: var(--accent);
     line-height: 1.1;
   }
+  .stat-value--critical { color: var(--tri-critical); }
+  .stat-value--warning  { color: var(--tri-warning); }
+  .stat-value--good     { color: var(--tri-good); }
+  .stat-value--info     { color: var(--tri-info); }
   .stat-label {
-    margin-top: 8px;
+    margin-top: 10px;
     font-size: 12.5px;
-    color: var(--ink-muted);
+    color: var(--ink-secondary);
     line-height: 1.4;
   }
 
@@ -524,160 +534,145 @@
     <h1>Parte 4 — Estatística Descritiva</h1>
     <p class="dek">Agendamento e triagem de consultas do SUS com apoio de IA: os primeiros números da fila.</p>
     <div class="meta-line">
-      <span>UBS piloto (dados fictícios)</span>
-      <span>Janela de 30 dias</span>
-      <span>Classificação por Protocolo de Manchester adaptado</span>
+      <span>Conjunto simulado de 100 pedidos</span>
+      <span>Dados hipotéticos, para fins acadêmicos</span>
+      <span>Contexto consultado: Ministério da Saúde — Absenteísmo no SUS</span>
     </div>
   </header>
 
   <section class="stats" aria-label="Indicadores resumo">
     <div class="stat-tile">
-      <div class="stat-value">617</div>
-      <div class="stat-label">Triagens registradas no período</div>
+      <div class="stat-value stat-value--info">100</div>
+      <div class="stat-label">Pedidos de agendamento analisados</div>
     </div>
     <div class="stat-tile">
-      <div class="stat-value">81&nbsp;min</div>
-      <div class="stat-label">Tempo médio geral de espera</div>
+      <div class="stat-value stat-value--good">42%</div>
+      <div class="stat-label">Maior concentração: aguardam de 8 a 30 dias</div>
     </div>
     <div class="stat-tile">
-      <div class="stat-value">57,2%</div>
-      <div class="stat-label">Casos de baixa urgência (verde + azul)</div>
+      <div class="stat-value stat-value--warning">40%</div>
+      <div class="stat-label">Aguardam mais de 30 dias para o agendamento</div>
     </div>
     <div class="stat-tile">
-      <div class="stat-value">12,2%</div>
-      <div class="stat-label">Casos de alta prioridade (vermelho + laranja)</div>
+      <div class="stat-value stat-value--critical">13%</div>
+      <div class="stat-label">Aguardam mais de 90 dias (espera crítica)</div>
     </div>
   </section>
 
   <section class="context">
     <div class="section-label">Sobre os dados</div>
-    <h2>Uma UBS piloto, simulada para o diagnóstico</h2>
+    <h2>Conjunto de dados e tabela de frequência</h2>
     <p class="prose">
-      Os números abaixo são <strong>fictícios</strong>, construídos para fins didáticos desta primeira fase do
-      HackGov. Eles simulam o registro de triagens de uma Unidade Básica de Saúde piloto ao longo de
-      <strong>30 dias corridos</strong>. Cada atendimento foi classificado por um módulo de triagem assistida por IA
-      segundo uma adaptação do <strong>Protocolo de Manchester</strong>, que ordena os casos por risco clínico —
-      de Emergência a Não urgente. Para cada classificação, registramos o número de casos e o tempo médio decorrido
-      entre a triagem e o atendimento efetivo.
+      Para analisar o funcionamento do serviço de agendamento de consultas do SUS, foi criado um conjunto de dados
+      <strong>simulados</strong> com <strong>100 pedidos de atendimento</strong>. Os dados representam o tempo
+      estimado de espera até o agendamento e servem como uma primeira referência para os indicadores do HackGov.
+      Eles não representam oficialmente um município específico.
+    </p>
+    <p class="prose" style="font-size:12.5px; color:var(--ink-muted);">
+      Observação metodológica: a base é hipotética e foi organizada exclusivamente para demonstrar a análise
+      estatística proposta.
     </p>
   </section>
 
   <section class="table-section">
     <div class="section-label">Tabela de frequência</div>
-    <h2>Triagens por classificação de risco</h2>
+    <h2>Tempo estimado de espera até o agendamento</h2>
     <div class="table-wrap" style="margin-top: 18px;">
       <table>
         <thead>
           <tr>
-            <th>Classificação de risco</th>
-            <th class="num">Casos</th>
-            <th class="num">Freq. relativa</th>
-            <th class="num">Espera média</th>
+            <th>Tempo estimado de espera</th>
+            <th class="num">Número de pedidos</th>
+            <th class="num">Percentual</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td class="cat-cell"><span class="dot" style="background:var(--tri-critical)"></span>Vermelho — Emergência</td>
-            <td class="num">14</td>
-            <td class="num">2,3%</td>
-            <td class="num">6 min</td>
+            <td class="cat-cell"><span class="dot" style="background:var(--tri-good)"></span>0 a 7 dias</td>
+            <td class="num">18</td>
+            <td class="num">18%</td>
           </tr>
           <tr>
-            <td class="cat-cell"><span class="dot" style="background:var(--tri-serious)"></span>Laranja — Muito urgente</td>
-            <td class="num">61</td>
-            <td class="num">9,9%</td>
-            <td class="num">18 min</td>
+            <td class="cat-cell"><span class="dot" style="background:var(--tri-info)"></span>8 a 30 dias</td>
+            <td class="num">42</td>
+            <td class="num">42%</td>
           </tr>
           <tr>
-            <td class="cat-cell"><span class="dot" style="background:var(--tri-warning)"></span>Amarelo — Urgente</td>
-            <td class="num">189</td>
-            <td class="num">30,6%</td>
-            <td class="num">52 min</td>
+            <td class="cat-cell"><span class="dot" style="background:var(--tri-warning)"></span>31 a 90 dias</td>
+            <td class="num">27</td>
+            <td class="num">27%</td>
           </tr>
           <tr>
-            <td class="cat-cell"><span class="dot" style="background:var(--tri-good)"></span>Verde — Pouco urgente</td>
-            <td class="num">246</td>
-            <td class="num">39,9%</td>
-            <td class="num">98 min</td>
-          </tr>
-          <tr>
-            <td class="cat-cell"><span class="dot" style="background:var(--tri-info)"></span>Azul — Não urgente</td>
-            <td class="num">107</td>
-            <td class="num">17,3%</td>
-            <td class="num">141 min</td>
+            <td class="cat-cell"><span class="dot" style="background:var(--tri-critical)"></span>Mais de 90 dias</td>
+            <td class="num">13</td>
+            <td class="num">13%</td>
           </tr>
           <tr class="total">
             <td>Total</td>
-            <td class="num">617</td>
+            <td class="num">100</td>
             <td class="num">100%</td>
-            <td class="num">81 min*</td>
           </tr>
         </tbody>
       </table>
     </div>
-    <p class="prose" style="font-size:12.5px; color:var(--ink-muted); margin-top:10px;">*Média geral ponderada pelo número de casos em cada classificação.</p>
+    <p class="prose" style="font-size:12.5px; color:var(--ink-muted); margin-top:10px;">Fonte dos dados: conjunto simulado para fins acadêmicos. Contexto consultado: Ministério da Saúde — Absenteísmo no SUS.</p>
   </section>
 
   <section class="charts">
     <div class="section-label">Gráficos</div>
-    <h2>A mesma fila, vista de dois ângulos</h2>
+    <h2>Distribuição simulada dos pedidos por tempo estimado de espera</h2>
+    <p class="prose" style="margin-top:6px;">Figura 1 — Distribuição simulada de 100 pedidos por tempo estimado de espera.</p>
 
     <div class="charts-grid" style="margin-top: 18px;">
 
       <div class="chart-panel">
-        <div class="chart-title">Tempo médio de espera por classificação</div>
-        <div class="chart-caption">Minutos entre a triagem e o atendimento efetivo.</div>
+        <div class="chart-title">Número de pedidos por faixa de espera</div>
+        <div class="chart-caption">Quantidade de pedidos em cada faixa de tempo estimado até o agendamento.</div>
         <div class="bar-chart">
           <div class="bar-axis">
-            <span>150</span><span>100</span><span>50</span><span>0</span>
+            <span>50</span><span>25</span><span>0</span>
           </div>
           <div class="bar-plot" id="barPlot">
             <div class="gridline" style="bottom: 100%;"></div>
-            <div class="gridline" style="bottom: 66.6%;"></div>
-            <div class="gridline" style="bottom: 33.3%;"></div>
+            <div class="gridline" style="bottom: 50%;"></div>
 
-            <div class="bar-col" data-tip="Vermelho — Emergência: 6 min de espera média (14 casos)">
-              <div class="bar-value">6</div>
-              <div class="bar" style="height:4%; background:var(--tri-critical);"></div>
-              <div class="bar-cat">Verm.</div>
-            </div>
-            <div class="bar-col" data-tip="Laranja — Muito urgente: 18 min de espera média (61 casos)">
+            <div class="bar-col" data-tip="0 a 7 dias: 18 pedidos (18%)">
               <div class="bar-value">18</div>
-              <div class="bar" style="height:12%; background:var(--tri-serious);"></div>
-              <div class="bar-cat">Laranja</div>
+              <div class="bar" style="height:36%; background:var(--tri-good);"></div>
+              <div class="bar-cat">0–7d</div>
             </div>
-            <div class="bar-col" data-tip="Amarelo — Urgente: 52 min de espera média (189 casos)">
-              <div class="bar-value">52</div>
-              <div class="bar" style="height:34.7%; background:var(--tri-warning);"></div>
-              <div class="bar-cat">Amarelo</div>
+            <div class="bar-col" data-tip="8 a 30 dias: 42 pedidos (42%)">
+              <div class="bar-value">42</div>
+              <div class="bar" style="height:84%; background:var(--tri-info);"></div>
+              <div class="bar-cat">8–30d</div>
             </div>
-            <div class="bar-col" data-tip="Verde — Pouco urgente: 98 min de espera média (246 casos)">
-              <div class="bar-value">98</div>
-              <div class="bar" style="height:65.3%; background:var(--tri-good);"></div>
-              <div class="bar-cat">Verde</div>
+            <div class="bar-col" data-tip="31 a 90 dias: 27 pedidos (27%)">
+              <div class="bar-value">27</div>
+              <div class="bar" style="height:54%; background:var(--tri-warning);"></div>
+              <div class="bar-cat">31–90d</div>
             </div>
-            <div class="bar-col" data-tip="Azul — Não urgente: 141 min de espera média (107 casos)">
-              <div class="bar-value">141</div>
-              <div class="bar" style="height:94%; background:var(--tri-info);"></div>
-              <div class="bar-cat">Azul</div>
+            <div class="bar-col" data-tip="Mais de 90 dias: 13 pedidos (13%)">
+              <div class="bar-value">13</div>
+              <div class="bar" style="height:26%; background:var(--tri-critical);"></div>
+              <div class="bar-cat">&gt;90d</div>
             </div>
           </div>
         </div>
       </div>
 
       <div class="chart-panel">
-        <div class="chart-title">Distribuição dos atendimentos</div>
-        <div class="chart-caption">Participação percentual de cada classificação no total triado.</div>
+        <div class="chart-title">Distribuição dos pedidos</div>
+        <div class="chart-caption">Participação percentual de cada faixa de espera no total de pedidos.</div>
         <div class="pie-wrap">
-          <svg class="pie-svg" viewBox="0 0 220 220" role="img" aria-label="Gráfico de setores: distribuição dos atendimentos por classificação de risco">
-            <path class="pie-slice" data-tip="Vermelho — Emergência: 2,3% (14 casos)" fill="var(--tri-critical)" d="M110,110 L110,20 A90,90 0 0,1 122.79,20.91 Z"></path>
-            <path class="pie-slice" data-tip="Laranja — Muito urgente: 9,9% (61 casos)" fill="var(--tri-serious)" d="M110,110 L122.79,20.91 A90,90 0 0,1 172.22,44.97 Z"></path>
-            <path class="pie-slice" data-tip="Amarelo — Urgente: 30,6% (189 casos)" fill="var(--tri-warning)" d="M110,110 L172.22,44.97 A90,90 0 0,1 149.43,190.91 Z"></path>
-            <path class="pie-slice" data-tip="Verde — Pouco urgente: 39,9% (246 casos)" fill="var(--tri-good)" d="M110,110 L149.43,190.91 A90,90 0 0,1 30.23,68.34 Z"></path>
-            <path class="pie-slice" data-tip="Azul — Não urgente: 17,3% (107 casos)" fill="var(--tri-info)" d="M110,110 L30.23,68.34 A90,90 0 0,1 110,20 Z"></path>
-            <text class="pie-label" x="164.35" y="121.42" text-anchor="middle">30,6%</text>
-            <text class="pie-label" x="70.54" y="151.31" text-anchor="middle">39,9%</text>
-            <text class="pie-label" x="81.49" y="65.96" text-anchor="middle">17,3%</text>
+          <svg class="pie-svg" viewBox="0 0 220 220" role="img" aria-label="Gráfico de setores: distribuição dos pedidos por faixa de tempo estimado de espera">
+            <path class="pie-slice" data-tip="0 a 7 dias: 18% (18 pedidos)" fill="var(--tri-good)" d="M110,110 L110,20 A90,90 0 0,1 191.43,71.68 Z"></path>
+            <path class="pie-slice" data-tip="8 a 30 dias: 42% (42 pedidos)" fill="var(--tri-info)" d="M110,110 L191.43,71.68 A90,90 0 0,1 57.10,182.81 Z"></path>
+            <path class="pie-slice" data-tip="31 a 90 dias: 27% (27 pedidos)" fill="var(--tri-warning)" d="M110,110 L57.10,182.81 A90,90 0 0,1 44.39,48.40 Z"></path>
+            <path class="pie-slice" data-tip="Mais de 90 dias: 13% (13 pedidos)" fill="var(--tri-critical)" d="M110,110 L44.39,48.40 A90,90 0 0,1 110,20 Z"></path>
+            <text class="pie-label" x="142.15" y="59.34" text-anchor="middle">18%</text>
+            <text class="pie-label" x="148.24" y="156.23" text-anchor="middle">42%</text>
+            <text class="pie-label" x="50.28" y="115.65" text-anchor="middle">27%</text>
+            <text class="pie-label" x="86.17" y="54.93" text-anchor="middle">13%</text>
           </svg>
         </div>
       </div>
@@ -685,11 +680,10 @@
     </div>
 
     <div class="legend">
-      <div class="legend-item"><span class="dot" style="background:var(--tri-critical)"></span>Vermelho — Emergência (2,3%)</div>
-      <div class="legend-item"><span class="dot" style="background:var(--tri-serious)"></span>Laranja — Muito urgente (9,9%)</div>
-      <div class="legend-item"><span class="dot" style="background:var(--tri-warning)"></span>Amarelo — Urgente (30,6%)</div>
-      <div class="legend-item"><span class="dot" style="background:var(--tri-good)"></span>Verde — Pouco urgente (39,9%)</div>
-      <div class="legend-item"><span class="dot" style="background:var(--tri-info)"></span>Azul — Não urgente (17,3%)</div>
+      <div class="legend-item"><span class="dot" style="background:var(--tri-good)"></span>0 a 7 dias (18%)</div>
+      <div class="legend-item"><span class="dot" style="background:var(--tri-info)"></span>8 a 30 dias (42%)</div>
+      <div class="legend-item"><span class="dot" style="background:var(--tri-warning)"></span>31 a 90 dias (27%)</div>
+      <div class="legend-item"><span class="dot" style="background:var(--tri-critical)"></span>Mais de 90 dias (13%)</div>
     </div>
   </section>
 
@@ -700,27 +694,30 @@
     <div class="qa">
       <h3>Quais padrões, comportamentos ou gargalos podem ser identificados?</h3>
       <p class="prose">
-        A triagem assistida por IA está priorizando corretamente: os casos <strong>vermelho</strong> e
-        <strong>laranja</strong> — só 12,2% do volume — são atendidos em poucos minutos (6 e 18 min, em média).
-        O problema está do outro lado da fila. <strong>Verde e azul somam 57,2% de todo o volume</strong>, mas são
-        exatamente os que mais esperam: 98 e 141 minutos, respectivamente — quase duas horas e meia para o caso
-        menos urgente. E o gargalo já está subindo de nível: o <strong>amarelo</strong>, que deveria ser resolvido
-        com agilidade, já acumula 52 minutos de espera média. Ou seja, a fila não está represada por excesso de
-        emergências, e sim pelo alto volume de casos de baixa complexidade disputando a mesma capacidade de
-        atendimento presencial — um gargalo estrutural de capacidade, não de priorização clínica.
+        Os gráficos de barras e de setores mostram que a maior parte dos pedidos, equivalente a <strong>42%</strong>,
+        possui previsão de atendimento entre 8 e 30 dias. O gráfico também revela que 27% dos pedidos aguardam entre
+        31 e 90 dias e que 13% esperam mais de 90 dias. Portanto, <strong>40% dos usuários analisados aguardam mais
+        de 30 dias</strong> para conseguir o atendimento. Esse resultado indica a existência de um possível gargalo
+        na disponibilidade de vagas, na organização das agendas ou na comunicação entre o cidadão e a unidade de
+        saúde. A demora pode aumentar a insatisfação dos usuários e contribuir para o crescimento das filas. Além
+        disso, a falta de lembretes e de opções simples para confirmar, cancelar ou remarcar consultas pode provocar
+        o não comparecimento do cidadão e o desperdício de horários disponíveis.
       </p>
     </div>
 
     <div class="qa" style="margin-top: 24px;">
       <h3>Que decisão estratégica de gestão pública poderia ser tomada com base nesses dados?</h3>
       <p class="prose">
-        Com esse diagnóstico, a gestão da UBS pode usar a própria triagem por IA para <strong>desviar</strong> os
-        casos verde e azul do atendimento presencial tradicional — orientação remota, telemedicina, encaminhamento
-        à farmácia ou agendamento em horários de menor demanda — em vez de tratá-los na mesma fila dos casos
-        urgentes. Isso libera vagas presenciais e evita que o amarelo continue subindo de tempo de espera. Esses
-        indicadores também podem virar uma <strong>meta de serviço (SLA)</strong> monitorada em dashboard: por
-        exemplo, nenhum caso classificado como amarelo ou acima deve esperar mais de 30 minutos — um limiar que,
-        hoje, já está sendo ultrapassado.
+        Com base nesses dados, uma decisão estratégica seria priorizar as unidades e especialidades que apresentam
+        maior concentração de espera acima de 30 dias. A gestão poderia reorganizar a oferta de vagas, acompanhar
+        diariamente os pedidos pendentes e utilizar o HackGov para enviar lembretes, confirmar atendimentos e
+        disponibilizar horários liberados por cancelamentos. Dessa forma, os dados poderiam apoiar decisões de
+        gestão, aumentar o aproveitamento da capacidade existente e melhorar a transparência do atendimento ao
+        cidadão.
+      </p>
+      <p class="prose" style="margin-top:10px;">
+        <strong>Indicador prioritário sugerido:</strong> percentual de pedidos com espera superior a 30 dias,
+        acompanhado por unidade e especialidade.
       </p>
     </div>
   </section>
@@ -729,32 +726,41 @@
     <div class="section-label">Parte 5 · Reflexão</div>
     <h2>Reflexão sobre transformação digital</h2>
     <p class="prose">
-      O HackGov nasce para enfrentar um problema público concreto e recorrente no SUS: filas de espera longas e mal
-      geridas, em que o tempo de atendimento não acompanha o risco clínico real de cada paciente — como mostrou o
-      diagnóstico acima, em que casos de baixa urgência (57,2% do volume) chegam a esperar 141 minutos disputando a
-      mesma capacidade presencial dos casos realmente urgentes. Ao inserir uma camada de triagem assistida por IA na
-      porta de entrada do atendimento, o sistema <strong>aumenta a produtividade</strong> da equipe de saúde, que
-      deixa de gastar tempo clínico classificando manualmente cada caso e passa a agir diretamente sobre uma fila já
-      priorizada; <strong>aumenta a transparência ao cidadão</strong>, que passa a acompanhar sua posição, o tempo
-      estimado de espera e o critério objetivo usado para priorizá-lo, em vez de depender da percepção subjetiva de
-      estar sendo preterido; e <strong>reduz custos</strong>, porque desvia os casos verde e azul do atendimento
-      presencial caro — telemedicina, orientação remota, encaminhamento à farmácia — liberando vagas físicas e
-      evitando desperdício da capacidade instalada.
+      O HackGov propõe resolver a demora, a falta de informação e a dificuldade de acompanhamento no agendamento de
+      consultas e pedidos médicos do SUS — como mostrou o diagnóstico acima, em que 40% dos pedidos analisados
+      aguardam mais de 30 dias por atendimento. Na primeira versão, o sistema permitirá <strong>consultar o status
+      da solicitação</strong>, verificar horários disponíveis, confirmar, cancelar ou remarcar atendimentos e
+      receber lembretes automáticos. Essas funcionalidades podem <strong>aumentar a produtividade</strong> das
+      unidades de saúde, reduzir o trabalho manual e o retrabalho dos servidores, melhorar o aproveitamento das
+      vagas e diminuir custos causados por faltas e agendamentos perdidos. Além disso, o cidadão terá mais
+      <strong>transparência</strong> sobre sua solicitação, a previsão de atendimento e as etapas do processo.
     </p>
 
     <div class="impact-grid">
       <div class="impact-card">
         <div class="impact-tag">Produtividade</div>
-        <p>Equipe de saúde deixa de triar manualmente e atua sobre uma fila já classificada por risco.</p>
+        <p>Confirmação, cancelamento e remarcação digitais reduzem o trabalho manual e o retrabalho dos servidores.</p>
       </div>
       <div class="impact-card">
         <div class="impact-tag">Transparência</div>
-        <p>Cidadão vê posição, tempo estimado e o critério clínico usado para priorizar seu caso.</p>
+        <p>Cidadão acompanha o status da solicitação, a previsão de atendimento e as etapas do processo.</p>
       </div>
       <div class="impact-card">
         <div class="impact-tag">Custos</div>
-        <p>Casos de baixa urgência migram para canais remotos, liberando vagas presenciais mais caras.</p>
+        <p>Lembretes automáticos e melhor aproveitamento das vagas reduzem faltas e agendamentos perdidos.</p>
       </div>
+    </div>
+
+    <div class="qa" style="margin-top: 30px;">
+      <h3>Evolução futura: recomendações preventivas</h3>
+      <p class="prose">
+        Futuramente, com autorização do cidadão e integração segura aos sistemas de saúde, o HackGov poderá
+        utilizar o histórico assistencial para identificar possíveis necessidades de acompanhamento e sugerir
+        preventivamente que o cidadão procure sua unidade de referência ou avalie uma consulta com determinada
+        especialidade. Essa recomendação deverá utilizar protocolos definidos por profissionais de saúde,
+        <strong>sem realizar diagnóstico ou prescrição de forma autônoma</strong>, e sempre dependerá da decisão do
+        cidadão ou da validação de um profissional.
+      </p>
     </div>
 
     <div class="qa" style="margin-top: 30px;">
@@ -763,35 +769,38 @@
     <div class="risk-grid">
       <div class="risk-card">
         <div class="risk-num">1</div>
-        <h3>Erro de classificação algorítmica</h3>
+        <h3>Acesso indevido a dados pessoais de saúde</h3>
         <p>
-          Um modelo de triagem pode subclassificar um caso grave como pouco urgente (falso negativo), atrasando
-          um atendimento que deveria ser prioritário e colocando o paciente em risco.
+          Dados referentes à saúde são considerados dados pessoais sensíveis e exigem proteção reforçada conforme a
+          LGPD, o que expõe o sistema a risco de acesso indevido caso os controles de segurança sejam
+          insuficientes.
         </p>
         <p class="mitigation">
           <span class="mitigation-label">Mitigação</span>
-          Manter revisão humana obrigatória para casos limítrofes ou de maior gravidade, com poder de
-          profissionais de saúde para sobrepor a classificação da IA, e auditar periodicamente os acertos do
-          modelo contra o desfecho clínico real.
+          Aplicar coleta mínima de dados, consentimento e finalidade explícita, controle de acesso, autenticação,
+          criptografia e auditoria sobre quem consulta cada registro.
         </p>
       </div>
 
       <div class="risk-card">
         <div class="risk-num">2</div>
-        <h3>Exclusão digital e privacidade de dados</h3>
+        <h3>Recomendações incorretas por dados falhos</h3>
         <p>
-          Parte da população não tem acesso a smartphone ou internet estável para usar um canal digital de
-          triagem, e dados de saúde são sensíveis e regulados pela LGPD, o que expõe o sistema a risco de
-          exclusão e de vazamento.
+          A geração de recomendações preventivas pode falhar por causa de dados desatualizados, incompletos ou
+          enviesados, levando o cidadão a orientações equivocadas sobre sua necessidade de acompanhamento.
         </p>
         <p class="mitigation">
           <span class="mitigation-label">Mitigação</span>
-          Manter sempre um canal presencial equivalente para quem não tiver acesso digital, e aplicar
-          criptografia, minimização de dados e controles de acesso alinhados à LGPD, com trilha de auditoria
-          sobre quem consulta cada registro.
+          Manter atualização periódica das informações, testes recorrentes e supervisão humana; informar sempre
+          ao cidadão quando uma recomendação for gerada por IA e oferecer meios para contestação ou revisão.
         </p>
       </div>
     </div>
+
+    <p class="prose" style="font-size:12.5px; color:var(--ink-muted); margin-top:22px;">
+      Referências: <a href="https://www.gov.br/anpd/pt-br/assuntos/titular-de-dados-1/direito-dos-titulares" target="_blank" rel="noopener">ANPD — Direitos dos titulares de dados</a> ·
+      <a href="https://www.who.int/publications/i/item/9789240029200" target="_blank" rel="noopener">OMS — Ethics and governance of AI for health</a>
+    </p>
   </section>
 
   <footer>
