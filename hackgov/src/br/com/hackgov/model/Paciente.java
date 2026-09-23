@@ -20,6 +20,11 @@ public class Paciente {
         return "***." + cpf.substring(3, 6) + "." + cpf.substring(6, 9) + "-**";
     }
 
+    /** Compara o CPF informado sem expor o CPF armazenado. */
+    public boolean possuiCpf(String cpfInformado) {
+        return cpfInformado != null && cpf.equals(cpfInformado.replaceAll("\\D", ""));
+    }
+
     public int getId() { return id; }
     public String getNome() { return nome; }
     public String getEmail() { return email; }

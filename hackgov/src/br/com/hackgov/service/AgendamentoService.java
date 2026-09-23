@@ -9,6 +9,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Fluxo principal: criar pedido, confirmar agendamento (S-01),
@@ -124,6 +125,13 @@ public class AgendamentoService {
                 .filter(a -> a.getPedido().getId() == pedido.getId() && a.isAtivo())
                 .findFirst()
                 .orElseThrow(() -> new IllegalStateException("Pedido #" + pedido.getId() + " não possui agendamento ativo."));
+    }
+
+    /** T13 - Lista apenas os pedidos do próprio paciente. */
+    public List<PedidoMedico> listarPedidos(Paciente solicitante) {
+        return pedidos.stream()
+                .filter(p -> p.pertenceA(solicitante))
+                .collect(Collectors.toList());
     }
 
     public Agendamento buscarAgendamento(Paciente solicitante, int pedidoId) {

@@ -41,6 +41,14 @@ public class AgendaService {
                 .collect(Collectors.toList());
     }
 
+    public List<String> listarEspecialidades() {
+        return horarios.stream()
+                .map(h -> h.getEspecialista().getEspecialidade())
+                .distinct()
+                .sorted()
+                .collect(Collectors.toList());
+    }
+
     public HorarioDisponivel buscarPorId(int id) {
         return horarios.stream()
                 .filter(h -> h.getId() == id)
