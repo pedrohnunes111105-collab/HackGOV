@@ -35,3 +35,6 @@ Os dados ficam em memória: ao fechar o programa, tudo é apagado.
 - T11      AgendamentoService.trocarHorario / cancelarAgendamento (confirmação obrigatória)
 - T13      AgendamentoService.buscarPedidoComAcesso / listarPedidos + PedidoMedico.pertenceA
 - T14      Demonstracao.java (cenários 1 a 7)
+
+## Reflexão técnica
+Ver [REFLEXAO_TECNICA.md](REFLEXAO_TECNICA.md) (decisões de modelagem, limitações e próximos passos).
